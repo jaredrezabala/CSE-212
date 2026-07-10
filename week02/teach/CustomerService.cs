@@ -1,4 +1,7 @@
-﻿/// <summary>
+﻿using System.Security.Cryptography;
+
+
+/// <summary>
 /// Maintain a Customer Service Queue.  Allows new customers to be 
 /// added and allows customers to be serviced.
 /// </summary>
@@ -11,20 +14,62 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: The size of the queue is = 0
+        // Expected Result: The size of the queue should be = 10
         Console.WriteLine("Test 1");
-
+        var cs = new CustomerService(2);
+        Console.WriteLine(cs);
         // Defect(s) Found: 
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Adding a new customer using AddNewCustomer method
+        // Expected Result: Customer gets successfully added to the back of the queue
         Console.WriteLine("Test 2");
-
+        // cs.AddNewCustomer();
+        // cs.AddNewCustomer();
+        // Console.WriteLine(cs);
         // Defect(s) Found: 
+
+        // Console.WriteLine("=================");
+
+        // Test 3
+        // Scenario: Adding a new customer using AddNewCustomer method
+        // Expected Result: Customer gets successfully added to the back of the queue
+        Console.WriteLine("Test 3");
+        // cs.AddNewCustomer();
+        // cs.AddNewCustomer();
+        // cs.AddNewCustomer();
+
+        // Defect(s) Found: It let us create additional customer even when queue was fullm we changed > for >=
+
+        Console.WriteLine("=================");
+
+
+        // Test 4
+        // Scenario: Adding a new customer using AddNewCustomer method
+        // Expected Result: Customer gets successfully added to the back of the queue
+        Console.WriteLine("Test 4");
+        // cs.AddNewCustomer();
+        // cs.ServeCustomer();
+        // cs.AddNewCustomer();
+        // cs.ServeCustomer();
+
+        // Defect(s) Found: We got an index out of range error msg System.ArgumentOutOfRangeException when serving a customer
+        //To solve this we invert the order of   var customer = _queue[0]; and _queue.RemoveAt(0); quick tip -- the index of the next customer to exit must be reference or save so then it can be removed
+
+        Console.WriteLine("=================");
+
+
+          // Test 5
+        // Scenario: Adding a new customer using AddNewCustomer method
+        // Expected Result: Customer gets successfully added to the back of the queue
+        Console.WriteLine("Test 5");
+        cs.ServeCustomer();
+
+        // Defect(s) Found: No error message was displayed... only a console error of System.ArgumentOutOfRangeException
+        //To solve this I wrapped the ServeCustomer into a try catch to handle the System.ArgumentOutOfRangeException
 
         Console.WriteLine("=================");
 
@@ -67,7 +112,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,9 +133,17 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
-        var customer = _queue[0];
-        Console.WriteLine(customer);
+        try
+        {
+            var customer = _queue[0];
+            _queue.RemoveAt(0);
+             Console.WriteLine(customer);
+        }
+        catch (System.ArgumentOutOfRangeException)
+        {
+            Console.WriteLine("Your queue is empty, no elements to dequeue");
+        }
+        
     }
 
     /// <summary>
