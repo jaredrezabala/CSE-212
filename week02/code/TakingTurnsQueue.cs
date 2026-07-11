@@ -44,6 +44,11 @@ public class TakingTurnsQueue
             {
                 person.Turns -= 1;
                 _people.Enqueue(person);
+
+            //Second Test method fixed, I added another statement to count for users with infinity number of turns
+            } else if (person.Turns <= 0)
+            {
+                _people.Enqueue(person);
             }
 
             return person;

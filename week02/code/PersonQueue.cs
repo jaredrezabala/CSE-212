@@ -13,7 +13,9 @@ public class PersonQueue
     /// <param name="person">The person to add</param>
     public void Enqueue(Person person)
     {
-        _queue.Insert(0, person);
+        //First error fixed, last user dequeued was being added to the first place in the queue again.
+        // _queue.Insert(0, person);
+        _queue.Add(person);
     }
 
     public Person Dequeue()
